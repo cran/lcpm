@@ -1,6 +1,6 @@
 #' @title Fitting a Log Cumulative Probability Model
 #'
-#' @description \code{lcpm} provides the maximum likelihood estimate for ordinal outcomes and a Generalized Linear Model (GLM) with the log link without the assumption of proportionality. That is, lcpm determines the MLE for log[P(y <= j)]= cut_j + X beta_j subject to [cut_{j-1} + X beta_{j-1} <= cut_j + X beta_j] and [cut_j + X beta_j <=0]. This implementation uses \code{\link{constrOptim}}  to determine the MLE and so the results account for the restricted parameter space.
+#' @description \code{lcpm} provides the maximum likelihood estimate for ordinal outcomes (J>2 categories) and a Generalized Linear Model (GLM) with the log link without the assumption of proportionality. That is, lcpm determines the MLE for log[P(y <= j)]= cut_j + X beta_j subject to [cut_{j-1} + X beta_{j-1} <= cut_j + X beta_j] and [cut_j + X beta_j <=0]. This implementation uses \code{\link{constrOptim}}  to determine the MLE and so the results account for the restricted parameter space.
 #' @param formula.linear an object of class "formula": a symbolic description of the linear model to be fitted.
 #' @param data dataframe containing the data in linear model.
 #' @param conf.level optional confidence level (1-alpha) defaulted to 0.95.
@@ -27,7 +27,7 @@
 #' \item{startvalues}{vector of the starting values for constrained optimization algorithm}
 #' \item{proptest}{Score test if a proportionality assumption is appropriate, includes test statistic (teststat), p-value (pval), df, and fitted proportional probability model (propmodel)}
 #' @note A warning of MLE close to the boundary must be carefully considered. Data may have some structure that requires attention. Additionally, there is no imputation. Any NA results in complete row removal.
-#' @references Singh, G; Fick, G.H. Ordinal Outcomes: Cumulative Probability Model with a Log Link. Manuscript in preparation.
+#' @references Singh, G; Fick, G.H. Ordinal outcomes: a cumulative probability model with the log link without an assumption of proportionality. Manuscript in preparation.
 #' @examples
 #' # Example below showing the use of y.order if outcome is not integers 1:J.
 #' # See examples in ppm for an additional example
@@ -175,12 +175,12 @@ lcpm<-function(formula.linear, data,conf.level=0.95,y.order=NULL, startval=NULL,
       colnames(fit.vals)[ncol(fit.vals)]<-"exp(X'Beta)"
 
 			NegHess <- try(hessian(lcpmMinusloglik,constr_optim$par,Xa1=Xa1,XaJ=XaJ,Xaj1=Xaj1,Xaj2=Xaj2))
-			if(class(NegHess)=="try-error"){warning("WARNING: POTENTIAL BOUNDARY ISSUE, SE ARE QUESTIONABLE")
+			if(class(NegHess)[1]=="try-error"){warning("WARNING: POTENTIAL BOUNDARY ISSUE, SE ARE QUESTIONABLE")
 			  testa<-matrix(NA,ncol=length(mle),nrow=length(mle))
 			  SE <-c(rep(NA,length(mle)))
 			} else{
               testa <- try(solve(NegHess))
-              if(class(testa)!="try-error"){
+              if(class(testa)[1]!="try-error"){
                 SE <-sqrt(diag(testa))
               } else {warning("WARNING: POSSIBLE SINGULAR HESSIAN MATRIX OR POTENTIAL BOUNDARY ISSUE")
                 SE <-c(rep(NA,length(mle)))

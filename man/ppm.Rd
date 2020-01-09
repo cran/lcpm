@@ -4,9 +4,17 @@
 \alias{ppm}
 \title{Fitting a Proportional Probability Model}
 \usage{
-ppm(formula.linear, data, conf.level = 0.95, y.order = NULL,
-  startval = NULL, less.than.0 = TRUE, control.list = NULL,
-  eps.outer = NULL, ...)
+ppm(
+  formula.linear,
+  data,
+  conf.level = 0.95,
+  y.order = NULL,
+  startval = NULL,
+  less.than.0 = TRUE,
+  control.list = NULL,
+  eps.outer = NULL,
+  ...
+)
 }
 \arguments{
 \item{formula.linear}{an object of class "formula": a symbolic description of the linear model to be fitted.}
@@ -40,7 +48,7 @@ list of class "ppm" is returned containing:
 \item{startvalues}{vector of the starting values for constrained optimization algorithm}
 }
 \description{
-\code{ppm} provides the maximum likelihood estimate for ordinal outcomes and a Generalized Linear Model with the log link with the assumption of proportionality. That is, ppm determines the MLE for log[P(y <= j)]= cut_j + X beta subject to [cut_{j-1} <= cut_j ] and [cut_j + X beta <=0]. This implementation uses \code{\link{constrOptim}} to determine the MLE and so the results should correctly account for the restricted parameter space. A proposed test for proportionality is included in \code{\link{lcpm}}.
+\code{ppm} provides the maximum likelihood estimate for ordinal outcomes (J>2 categories) and a Generalized Linear Model with the log link with the assumption of proportionality. That is, ppm determines the MLE for log[P(y <= j)]= cut_j + X beta subject to [cut_{j-1} <= cut_j ] and [cut_j + X beta <=0]. This implementation uses \code{\link{constrOptim}} to determine the MLE and so the results should correctly account for the restricted parameter space. A proposed test for proportionality is included in \code{\link{lcpm}}.
 }
 \note{
 A warning of MLE close to the boundary must be carefully considered. Data may have some structure that requires attention.  Additionally, there is no imputation. Any NA results in complete row removal.
@@ -74,7 +82,7 @@ test2<-ppm(y~var_a + var_b , data=testdata2, y.order=c("a","b","c","d"))
 summary(test2)
 }
 \references{
-Singh, G; Fick, G.H. (submitted) Ordinal Outcomes: A Cumulative Probability Model with the Log Link and the Assumption of Proportionality. Statistics in Medicine.
+Singh, G; Fick, G.H. (accepted) Ordinal outcomes: a cumulative probability model with the log link and an assumption of proportionality. Statistics in Medicine.
 }
 \seealso{
 \code{\link{lcpm}}

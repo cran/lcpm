@@ -1,7 +1,7 @@
 #' @title Fitting a Proportional Probability Model
 #'
 #'
-#' @description \code{ppm} provides the maximum likelihood estimate for ordinal outcomes and a Generalized Linear Model with the log link with the assumption of proportionality. That is, ppm determines the MLE for log[P(y <= j)]= cut_j + X beta subject to [cut_{j-1} <= cut_j ] and [cut_j + X beta <=0]. This implementation uses \code{\link{constrOptim}} to determine the MLE and so the results should correctly account for the restricted parameter space. A proposed test for proportionality is included in \code{\link{lcpm}}.
+#' @description \code{ppm} provides the maximum likelihood estimate for ordinal outcomes (J>2 categories) and a Generalized Linear Model with the log link with the assumption of proportionality. That is, ppm determines the MLE for log[P(y <= j)]= cut_j + X beta subject to [cut_{j-1} <= cut_j ] and [cut_j + X beta <=0]. This implementation uses \code{\link{constrOptim}} to determine the MLE and so the results should correctly account for the restricted parameter space. A proposed test for proportionality is included in \code{\link{lcpm}}.
 #' @param formula.linear an object of class "formula": a symbolic description of the linear model to be fitted.
 #' @param data dataframe containing the data in linear model.
 #' @param conf.level optional confidence level (1-alpha) defaulted to 0.95.
@@ -28,7 +28,7 @@
 #' \item{formula}{formula in the call of ppm}
 #' \item{startvalues}{vector of the starting values for constrained optimization algorithm}
 #' @note A warning of MLE close to the boundary must be carefully considered. Data may have some structure that requires attention.  Additionally, there is no imputation. Any NA results in complete row removal.
-#' @references Singh, G; Fick, G.H. (submitted) Ordinal Outcomes: A Cumulative Probability Model with the Log Link and the Assumption of Proportionality. Statistics in Medicine.
+#' @references Singh, G; Fick, G.H. (accepted) Ordinal outcomes: a cumulative probability model with the log link and an assumption of proportionality. Statistics in Medicine.
 #' @examples
 #' # 2 examples below showing the use of y.order if outcome are not integers 1:J.
 #'
@@ -163,13 +163,13 @@ ppm<-function (formula.linear, data,conf.level=0.95, y.order = NULL, startval = 
 
 
 			NegHess<-try(hessian(lcpmMinusloglik,constr_optim$par,Xa1=Xa1,XaJ=XaJ,Xaj1=Xaj1,Xaj2=Xaj2))
-			if(class(NegHess)=="try-error"){warning("WARNING: POTENTIAL BOUNDARY ISSUE, SE ARE QUESTIONABLE")
+			if(class(NegHess)[1]=="try-error"){warning("WARNING: POTENTIAL BOUNDARY ISSUE, SE ARE QUESTIONABLE")
 		    testa<-matrix(NA,ncol=length(mle),nrow=length(mle))
 		    SE <-c(rep(NA,length(mle)))
 			} else{
 
       			testa <- try(solve(NegHess))
-      			if(class(testa)!="try-error"){
+      			if(class(testa)[1]!="try-error"){
       			  SE <-sqrt(diag(testa))
       			}
       			else {warning("WARNING: POSSIBLE SINGULAR HESSIAN MATRIX OR POTENTIAL BOUNDARY ISSUE")

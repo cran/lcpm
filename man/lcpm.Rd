@@ -4,9 +4,17 @@
 \alias{lcpm}
 \title{Fitting a Log Cumulative Probability Model}
 \usage{
-lcpm(formula.linear, data, conf.level = 0.95, y.order = NULL,
-  startval = NULL, less.than.0 = TRUE, control.list = NULL,
-  eps.outer = NULL, ...)
+lcpm(
+  formula.linear,
+  data,
+  conf.level = 0.95,
+  y.order = NULL,
+  startval = NULL,
+  less.than.0 = TRUE,
+  control.list = NULL,
+  eps.outer = NULL,
+  ...
+)
 }
 \arguments{
 \item{formula.linear}{an object of class "formula": a symbolic description of the linear model to be fitted.}
@@ -41,7 +49,7 @@ list of class "lcpm" is returned containing:
 \item{proptest}{Score test if a proportionality assumption is appropriate, includes test statistic (teststat), p-value (pval), df, and fitted proportional probability model (propmodel)}
 }
 \description{
-\code{lcpm} provides the maximum likelihood estimate for ordinal outcomes and a Generalized Linear Model (GLM) with the log link without the assumption of proportionality. That is, lcpm determines the MLE for log[P(y <= j)]= cut_j + X beta_j subject to [cut_{j-1} + X beta_{j-1} <= cut_j + X beta_j] and [cut_j + X beta_j <=0]. This implementation uses \code{\link{constrOptim}}  to determine the MLE and so the results account for the restricted parameter space.
+\code{lcpm} provides the maximum likelihood estimate for ordinal outcomes (J>2 categories) and a Generalized Linear Model (GLM) with the log link without the assumption of proportionality. That is, lcpm determines the MLE for log[P(y <= j)]= cut_j + X beta_j subject to [cut_{j-1} + X beta_{j-1} <= cut_j + X beta_j] and [cut_j + X beta_j <=0]. This implementation uses \code{\link{constrOptim}}  to determine the MLE and so the results account for the restricted parameter space.
 }
 \note{
 A warning of MLE close to the boundary must be carefully considered. Data may have some structure that requires attention. Additionally, there is no imputation. Any NA results in complete row removal.
@@ -68,7 +76,7 @@ summary(test1)
 summary(test1$proptest$propmodel)
 }
 \references{
-Singh, G; Fick, G.H. Ordinal Outcomes: Cumulative Probability Model with a Log Link. Manuscript in preparation.
+Singh, G; Fick, G.H. Ordinal outcomes: a cumulative probability model with the log link without an assumption of proportionality. Manuscript in preparation.
 }
 \seealso{
 \code{\link{ppm}}

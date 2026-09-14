@@ -1,7 +1,6 @@
 #' @title Fitting a Proportional Probability Model
 #'
-#'
-#' @description \code{ppm} provides the maximum likelihood estimate for ordinal outcomes (J>2 categories) and a Generalized Linear Model with the log link with the assumption of proportionality. That is, ppm determines the MLE for log[P(y <= j)]= cut_j + X beta subject to [cut_{j-1} <= cut_j ] and [cut_j + X beta <=0]. This implementation uses \code{\link{constrOptim}} to determine the MLE and so the results should correctly account for the restricted parameter space. A proposed test for proportionality is included in \code{\link{lcpm}}.
+#' @description \code{ppm} provides the maximum likelihood estimate for ordinal outcomes (J>2 categories) and a Generalized Linear Model with the log link with the assumption of proportionality. That is, ppm determines the MLE for log[P(y <= j)]= cut_j + X beta subject to [cut_\{j-1\} <= cut_j ] and [cut_j + X beta <=0]. This implementation uses \code{\link{constrOptim}} to determine the MLE and so the results should correctly account for the restricted parameter space. A proposed test for proportionality is included in \code{\link{lcpm}}.
 #' @param formula.linear an object of class "formula": a symbolic description of the linear model to be fitted.
 #' @param data dataframe containing the data in linear model.
 #' @param conf.level optional confidence level (1-alpha) defaulted to 0.95.
@@ -28,7 +27,12 @@
 #' \item{formula}{formula in the call of ppm}
 #' \item{startvalues}{vector of the starting values for constrained optimization algorithm}
 #' @note A warning of MLE close to the boundary must be carefully considered. Data may have some structure that requires attention.  Additionally, there is no imputation. Any NA results in complete row removal.
-#' @references Singh, G; Fick, G.H. (accepted) Ordinal outcomes: a cumulative probability model with the log link and an assumption of proportionality. Statistics in Medicine.
+#' @references 
+#' Singh, G. and Fick, G. H. (2020).
+#' Ordinal outcomes: A cumulative probability model with the log link
+#' and an assumption of proportionality.
+#' \emph{Statistics in Medicine}, 39(9), 1343--1361.
+#' \doi{10.1002/sim.8479}
 #' @examples
 #' # 2 examples below showing the use of y.order if outcome are not integers 1:J.
 #'

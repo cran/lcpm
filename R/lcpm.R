@@ -1,6 +1,6 @@
 #' @title Fitting a Log Cumulative Probability Model
 #'
-#' @description \code{lcpm} provides the maximum likelihood estimate for ordinal outcomes (J>2 categories) and a Generalized Linear Model (GLM) with the log link without the assumption of proportionality. That is, lcpm determines the MLE for log[P(y <= j)]= cut_j + X beta_j subject to [cut_{j-1} + X beta_{j-1} <= cut_j + X beta_j] and [cut_j + X beta_j <=0]. This implementation uses \code{\link{constrOptim}}  to determine the MLE and so the results account for the restricted parameter space.
+#' @description \code{lcpm} provides the maximum likelihood estimate for ordinal outcomes (J>2 categories) and a Generalized Linear Model (GLM) with the log link without the assumption of proportionality. That is, lcpm determines the MLE for log[P(y <= j)]= cut_j + X beta_j subject to [cut_\{j-1\} + X beta_\{j-1\} <= cut_j + X beta_j] and [cut_j + X beta_j <=0]. This implementation uses \code{\link{constrOptim}}  to determine the MLE and so the results account for the restricted parameter space.
 #' @param formula.linear an object of class "formula": a symbolic description of the linear model to be fitted.
 #' @param data dataframe containing the data in linear model.
 #' @param conf.level optional confidence level (1-alpha) defaulted to 0.95.
@@ -153,7 +153,7 @@ lcpm<-function(formula.linear, data,conf.level=0.95,y.order=NULL, startval=NULL,
 			if(less.than.0==TRUE){
 			constr_optim1<-constrOptim(startval,lcpmMinusloglik, Xa1=Xa1, XaJ=XaJ, Xaj1=Xaj1, Xaj2=Xaj2 ,ui=-Xa.f, ci=rep(0,length(Xa.f[,1])), method="Nelder-Mead",control=control.list,outer.eps=eps.outer)
 		  constr_optim<-try(constrOptim(c(constr_optim1$par[1:ncuts],rep(0,ncuts*p)),lcpmMinusloglik, Xa1=Xa1, XaJ=XaJ, Xaj1=Xaj1, Xaj2=Xaj2 ,ui=-Xa.f, ci=rep(0,length(Xa.f[,1])), method="Nelder-Mead",control=control.list,outer.eps=eps.outer))
-			  if(class(constr_optim)=="try-error"){
+			  if(inherits(constr_optim,"try-error")){
 			  constr_optim<-constr_optim1
 			  }
 
